@@ -1,12 +1,11 @@
 {
-  "name": "space-explorer-game",
+  "name": "blinky",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "pixi.js": "^7.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -16,7 +15,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pages:dev": "wrangler pages dev --compatibility-date=2024-01-17 --port 3000 -- npm start",
+    "pages:deploy": "npm run build && wrangler pages deploy ./build"
   },
   "eslintConfig": {
     "extends": [
@@ -37,6 +38,6 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.1"
+    "wrangler": "^3.25.0"
   }
 }
