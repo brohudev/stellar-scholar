@@ -46,6 +46,7 @@
 .animate-rocket {
   position: relative;
   animation: rocketAnimation 2s cubic-bezier(.17,.67,.83,.67) forwards;
+  z-index: 1;
 }
 
 .animate-rocket::before {
@@ -53,10 +54,11 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2px;
+  width: 10px; /* Increase the width of the trail */
   height: 100%;
   background: linear-gradient(to bottom, yellow, transparent);
   animation: trail 2s linear forwards;
+  z-index: -1; /* Place the trail behind the rocket image */
 }
 
 @keyframes trail {
