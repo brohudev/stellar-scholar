@@ -37,3 +37,30 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes rocketAnimation {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  50% { transform: translate(50vw, -25vh) rotate(15deg) scale(0.25); }
+  100% { transform: translate(100vw, 100vh) rotate(30deg) scale(0.10); }
+}
+
+.animate-rocket {
+  position: relative;
+  animation: rocketAnimation 2s cubic-bezier(.17,.67,.83,.67) forwards;
+}
+
+.animate-rocket::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, yellow, transparent);
+  animation: trail 2s linear forwards;
+}
+
+@keyframes trail {
+  0% { height: 100%; top: 50%; }
+  100% { height: 0; top: 100%; }
+}
