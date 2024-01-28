@@ -38,6 +38,9 @@ class Planet{
     }
 }
 
+const starbg=PIXI.Sprite.from(spriteDir+'stars.avif');
+starbg.scale.set(3,2);
+app.stage.addChild(starbg);
 const camera=new Camera();
 
 const planetNames=['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
@@ -48,7 +51,9 @@ const planetParams=[[.1,0,0],[1,.001,200],[1,.003,400],[1,.0025,650],[1,.0035,85
 const rotationEasing = 0.1;
 const gravity = 0.1;
 
-const rocket=PIXI.Sprite.from(spriteDir+'rocket with fire.png');
+const flyingTexture = PIXI.Texture.from(spriteDir+'rocket with fire.png');
+const stillTexture = PIXI.Texture.from(spriteDir+'rocket without fire.png');
+const rocket=new PIXI.Sprite(stillTexture);
 rocket.anchor.set(.5);
 rocket.x=app.view.width/2;
 rocket.y=app.view.height/2;
@@ -118,6 +123,16 @@ app.ticker.add((delta)=> {
     rocket.rotation=(sign*Math.acos(-camera.velocity.y/len));
     rocket.rotation=rocket.rotation||0;
 
+
+    if(len>20&&!rocket.flying){
+        rocket.texture=flyingTexture;
+        rocket.flying=true;
+    }
+    else if(len<20&&rocket.flying){
+        rocket.texture=stillTexture;
+        rocket.flying=false;
+    }
+
     if ( camera.moveForward || camera.moveBackward ) 
         camera.velocity.y -= camera.direction.y * 40.0 * delta;
     if ( camera.moveLeft || camera.moveRight ) 
@@ -137,7 +152,7 @@ planetNames.forEach((planet,idx)=>{
     app.stage.addChild(sprite);
     app.ticker.add((delta) => {
         planets[planet].time+=delta;
-        planets[planet].updatePos(sprite);
+        planets[planet].updatePos();
         const d={x:rocket.x-sprite.x,y:rocket.y-sprite.y};
         const dist=Math.sqrt(d.x**2+d.y**2);
         if(dist<MAX_DISTANCE_FROM_PLANET){
