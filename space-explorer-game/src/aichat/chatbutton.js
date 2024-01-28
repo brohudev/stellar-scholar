@@ -40,11 +40,11 @@ const Chatbox = ({ isVisible }) => {
       console.log(newMessage);
       try {
         const completion = await openai.chat.completions.create({
-            messages: [{ role: 'user', content: 'Say I love codered'}],
-            // messages: [{ role: "user", content: message },
-            //            { role: "assistant", name:`${characters[localStorage.getItem(characterKey)]}`}],
-            model: "gpt-3.5-turbo",
-          });
+          messages: [{ role: 'user', content: 'Say I love codered' }],
+          // messages: [{ role: "user", content: message },
+          //            { role: "assistant", name:`${characters[localStorage.getItem(characterKey)]}`}],
+          model: "gpt-3.5-turbo",
+        });
         // Update state with the received response from OpenAI
         setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
       } catch (error) {
@@ -57,47 +57,46 @@ const Chatbox = ({ isVisible }) => {
   };
 
   const handleKeyPress = (event) => {
-  if (event.key === 'Enter') {
-    handleSendMessage();
-  }
-};
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
 
   return (
     <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox -m-1  ${isVisible ? 'visible' : ''}`}>
-    <div className="flex flex-col h-96 overflow-y-auto mb-4 border-2 border-black rounded-3xl p-2 ">
-      {messages.map((message, index) => (
+      <div className="flex flex-col h-96 overflow-y-auto mb-4 border-2 border-black rounded-3xl p-2 ">
+        {messages.map((message, index) => (
           <div
             key={index}
-            className={`mb-1 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}
+            className={`mb-1 ${message.sender === 'player' ? 'text-right' : 'text-left'}`}
           >
             <span
-              className={`inline-block px-2 py-1 rounded ${
-                message.sender === 'user' ? 'bg-purple-500 mx-2 mt-1 text-white' : 'bg-gray-200'
-              }`}
+              className={`inline-block px-2 py-1 rounded ${message.sender === 'player' ? 'bg-blue-500 mx-2 mt-1 text-white' : 'bg-gray-200'
+                }`}
             >
               {message.text}
             </span>
           </div>
         ))}
-        </div>
-        <div className="flex items-center">
-          <input
-            type="text"
-            className="flex-1 p-2 border-2 border-black rounded-2xl bg-transparent text-black rounded-r-none"
-            placeholder="Type a message..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          <button
-            className="px-4 py-2 bg-purple-500 border-2 border-black border-l-0 text-white rounded-2xl rounded-l-none"
-            onClick={handleSendMessage}
-          >
-            Send
-          </button>
-        </div>
       </div>
-    );
+      <div className="flex items-center">
+        <input
+          type="text"
+          className="flex-1 p-2 border-2 border-black rounded-2xl bg-transparent text-black rounded-r-none"
+          placeholder="Type a message..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
+        <button
+          className="px-4 py-2 bg-purple-500 border-2 border-black border-l-0 text-white rounded-2xl rounded-l-none"
+          onClick={handleSendMessage}
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default ChatButton;
