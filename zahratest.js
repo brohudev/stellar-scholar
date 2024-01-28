@@ -8,7 +8,7 @@ const app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 // create a new Sprite from an image path
-const rocket = PIXI.Sprite.from('https://pixijs.com/assets/rocket.png');
+const rocket = PIXI.Sprite.from('https://pixijs.com/assets/bunny.png');
 
 // center the sprite's anchor point
 rocket.anchor.set(1);
@@ -71,7 +71,7 @@ let velocityY = 5;
       }
       else {
         // Gradually adjust rotation back to 0 when not turning
-        rocket.rotation += rotationEasing * (0 - rocket.rotation);
+        //rocket.rotation += rotationEasing * (0 - rocket.rotation);
       }
     });
 app.stage.addChild(rocket);
