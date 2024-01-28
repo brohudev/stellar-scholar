@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const Chatbox = () => {
+const Chatbox = ({ isVisible, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -15,7 +15,7 @@ const Chatbox = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4 border rounded shadow">
+    <div className={`fixed top-0 right-0 m-4 p-4 border rounded shadow max-w-md ${isVisible ? '' : 'hidden'}`}>
       <div className="flex flex-col h-64 overflow-y-auto mb-4">
         {messages.map((message, index) => (
           <div
@@ -45,6 +45,12 @@ const Chatbox = () => {
           onClick={handleSendMessage}
         >
           Send
+        </button>
+        <button
+          className="ml-2 px-4 py-2 bg-gray-300 text-black rounded"
+          onClick={onClose}
+        >
+          Close
         </button>
       </div>
     </div>
