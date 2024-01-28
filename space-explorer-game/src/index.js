@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import './App/index.css';
+import App from './App/App';
 import { canvas } from './SolarSystem/solarSystem';
 import ChatButton from './aichat/chatbutton';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import CharacterSelection from './CharacterSelection';
+import CharacterSelection from './App/CharacterSelection';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
