@@ -3,9 +3,9 @@
 .chatbox {
     /* ... rest of your styles ... */
     transition: transform 0.3s ease-out;
-    transform: translateY(100%);
+    transform: translateX(100%);
   }
   
   .chatbox.visible {
-    transform: translateY(0);
+    transform: translateX(0);
   }
