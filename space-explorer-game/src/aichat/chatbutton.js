@@ -34,7 +34,7 @@ const ChatButton = ({ canvas, characterImage }) => {
 const planetproompt = (planet) =>{
   let planetsetting = `You are teaching them about the planet ${planet}. `;
   let motive = "Give them a short description of this planet, in a simple and terse manner. ";
-  return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+".";
+  return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+". ask them if the want to know more.";
 }
 const Proompt = (planet, newMessage) =>{
   let answer = "";
