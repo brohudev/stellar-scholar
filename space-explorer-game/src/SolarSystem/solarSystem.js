@@ -4,6 +4,7 @@ import { minigame } from './miniGame';
 const MAX_DISTANCE_FROM_PLANET=200;
 const MIN_DISTANCE_FROM_PLANET=100;
 const DISTANCE_FROM_SUN=300;
+const MAX_SPEED=1200;
 const spriteDir='./icons/';
 
 const app = new PIXI.Application({
@@ -123,8 +124,8 @@ const normalize=vec2=>{
 };
 
 app.ticker.add((delta)=> {
-    camera.velocity.x -= camera.velocity.x * .01 * delta;
-    camera.velocity.y -= camera.velocity.y * .01 * delta;
+    camera.velocity.x -= camera.velocity.x * .005 * delta;
+    camera.velocity.y -= camera.velocity.y * .005 * delta;
 
     camera.velocity.x=camera.velocity.x||0;
     camera.velocity.y=camera.velocity.y||0;
@@ -148,20 +149,26 @@ app.ticker.add((delta)=> {
     }
 
     if ( camera.moveForward || camera.moveBackward ) 
-        camera.velocity.y -= camera.direction.y * 40.0 * delta;
+        camera.velocity.y -= camera.direction.y * 20.0 * delta;
     if ( camera.moveLeft || camera.moveRight ) 
-        camera.velocity.x -= camera.direction.x * 40.0 * delta;
+        camera.velocity.x -= camera.direction.x * 20.0 * delta;
 
-    camera.x += camera.velocity.x * delta/100;
-    camera.y += -camera.velocity.y * delta/100;
+    if(len>MAX_SPEED){
+        normalize(camera.velocity);
+        camera.velocity.x*=MAX_SPEED;
+        camera.velocity.y*=MAX_SPEED;
+    }
+
+    camera.x += camera.velocity.x * delta/200;
+    camera.y += -camera.velocity.y * delta/200;
     camera.x=camera.x||0;
     camera.y=camera.y||0;
 
 
     if(Math.sqrt((rocket.x-planets.sun.sprite.x)**2+(rocket.y-planets.sun.sprite.y)**2)<DISTANCE_FROM_SUN){
-        console.log('too hot')
-        camera.velocity.x-=camera.x*.4;
-        camera.velocity.y-=camera.y*.4;
+        console.log('too hot',camera.x-planets.sun.sprite.x)
+        camera.velocity.x+=(planets.sun.sprite.x-rocket.x)*4;
+        camera.velocity.y-=(planets.sun.sprite.y-rocket.y)*4;
     }
     
     //console.log(rocket.x,rocket.y)
@@ -173,6 +180,7 @@ minigame.setUp(canvas);
 //setup each planet
 planetNames.forEach((planet,idx)=>{
     const sprite=PIXI.Sprite.from(spriteDir+'planets/'+planet+'.png');
+    sprite.anchor.set(.5);
     planets[planet]=new Planet(...planetParams[idx],sprite);
     app.stage.addChild(sprite);
     app.ticker.add((delta) => {
@@ -192,6 +200,8 @@ planetNames.forEach((planet,idx)=>{
                     parent.appendChild(canvas.current);
                     camera.x=0;
                     camera.y=0;
+                    camera.velocity.x=0;
+                    camera.velocity.y=0;
                 }
                 console.log('landing')
             }
