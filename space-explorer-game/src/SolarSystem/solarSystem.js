@@ -167,7 +167,7 @@ planetNames.forEach((planet,idx)=>{
             const sign=d.x>0?-1:1;
             const angle=(sign*Math.acos(-d.y/dist));
             rocket.rotation += rotationEasing * (angle - rocket.rotation);
-            console.log(rocket.rotation)
+            // console.log(rocket.rotation)
         }
     });
 });

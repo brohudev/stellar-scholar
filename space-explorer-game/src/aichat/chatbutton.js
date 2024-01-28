@@ -44,7 +44,7 @@ const Chatbox = ({ isVisible }) => {
         console.log("abracadabra");
         console.log("before the api request");
         const completion = await openai.chat.completions.create({
-            messages: [{ role: 'user', content: 'Say this is a test'}],
+            messages: [{ role: 'user', content: 'Say I love codered'}],
             // messages: [{ role: "user", content: message },
             //            { role: "assistant", name:`${characters[localStorage.getItem(characterKey)]}`}],
             model: "gpt-3.5-turbo",
