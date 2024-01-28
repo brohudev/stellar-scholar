@@ -37,8 +37,6 @@ const planetproompt = (planet) =>{
   return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+". ask them if the want to know more.";
 }
 const handleSendMessage = (newMessage, planet, setNewMessage, setMessages, messages) => {
-  if (planet === null){
-    if (newMessage.trim() !== '') {
       let additionalcontext; //ik its not best practice but idc anymore. 
       if (planet === null) {//add the user message to additional context
         additionalcontext = `user: ${newMessage}`;
@@ -58,9 +56,6 @@ const handleSendMessage = (newMessage, planet, setNewMessage, setMessages, messa
         console.log("openai error: ", error.message);
       });
       setNewMessage('');    // Clear the input field after sending the message
-
-    }
-  }
 };
 const Chatbox = ({ isVisible }) => {
   const [messages, setMessages] = useState([]);
