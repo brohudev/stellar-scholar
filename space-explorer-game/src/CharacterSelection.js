@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import backgroundImage from './pixelbg.avif';
+import { useNavigate } from 'react-router-dom';
 
 const stars = [...Array(1000)].map((_, i) => {
     const style = {
@@ -30,6 +31,15 @@ function CharacterSelection() {
     const characterDescriptions = ["Bubbly intergalactic fish", 'Silly cosmic monkey', 'Nebula loving penguin', '10yr old space tiger'];
     const [selectedCard, setSelectedCard] = useState(null);
   
+    const navigate = useNavigate();
+    const handleClick = () => {
+      console.log('Button clicked gg');
+  
+      setTimeout(() => {
+        navigate('/game-start');
+      }, 1250); // Adjust this delay to match the duration of your animation
+    };
+
     return (
 <main className="relative w-screen h-screen bg-gradient-to-b from-[#2b2b4e] via-[#000033] to-[#2b2b4e] overflow-hidden" style={{ backgroundImage: `url(${backgroundImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
         {stars}
@@ -45,7 +55,7 @@ function CharacterSelection() {
               </div>
             ))}
           </div>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded mt-12">Select</button>
+          <button className="px-4 py-2 bg-blue-500 text-white rounded mt-12" onClick={handleClick}>Select</button>
         </div>
       </main>
     );

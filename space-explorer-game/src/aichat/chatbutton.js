@@ -1,10 +1,14 @@
 // ChatButton.js
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chatbox from './chatbox';
 
-const ChatButton = ({onClick}) => {
+const ChatButton = ({canvas}) => {
   const [isChatboxVisible, setIsChatboxVisible] = useState(false);
+  useEffect(()=>{
+    if(canvas&&!canvas.parent)
+    document.body.appendChild(canvas);
+  },[canvas]);
 
   const toggleChatbox = () => {
     setIsChatboxVisible(!isChatboxVisible);

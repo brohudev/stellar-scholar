@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route, Router } from 'react-router-dom';
-import CharacterSelection from './CharacterSelection'; import './App.css';
+import './App.css';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from './pixelbg.avif';
