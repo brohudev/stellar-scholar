@@ -43,16 +43,16 @@ const Chatbox = ({ isVisible }) => {
   };
 
   return (
-    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox -m-4 ${isVisible ? 'visible' : ''}`}>
-      <div className="flex flex-col h-64 overflow-y-auto mb-4">
+    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox -m-4  ${isVisible ? 'visible' : ''}`}>
+      <div className="flex flex-col h-64 overflow-y-auto mb-4 border-2 border-black rounded-3xl p-2 ">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`mb-2 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}
+            className={`mb-1 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}
           >
             <span
               className={`inline-block px-2 py-1 rounded ${
-                message.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                message.sender === 'user' ? 'bg-purple-500 mx-2 mt-1 text-white' : 'bg-gray-200'
               }`}
             >
               {message.text}
@@ -63,13 +63,13 @@ const Chatbox = ({ isVisible }) => {
       <div className="flex items-center">
         <input
           type="text"
-          className="flex-1 p-2 border rounded-l"
+          className="flex-1 p-2 border-2 border-black rounded-2xl bg-transparent text-black rounded-r-none"
           placeholder="Type a message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
         />
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-r"
+          className="px-4 py-2 bg-purple-500 border-2 border-black border-l-0 text-white rounded-2xl rounded-l-none"
           onClick={handleSendMessage}
         >
           Send
