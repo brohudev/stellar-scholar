@@ -1,52 +1,51 @@
-import React from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import React, { useState } from 'react';
+
+const stars = [...Array(1000)].map((_, i) => {
+    const style = {
+        left: `${Math.random() * 100}vw`,
+        top: `${Math.random() * 100}vh`,
+        width: `${Math.random() * 2}px`,
+        height: `${Math.random() * 2}px`,
+        animationDelay: `${Math.random() * 2}s`,
+    };
+    return <div key={i} className="star absolute bg-white rounded-full" style={style} />;
+});
+
+const shootingStars = [...Array(10)].map((_, i) => {
+    const style = {
+        left: `${Math.random() * 100}vw`,
+        top: `${Math.random() * 100}vh`,
+        animationDuration: `${2 + Math.random() * 3}s`,
+        animationDelay: `${Math.random() * 5}s`,
+    };
+    return <div key={i} className="shooting-star" style={style} />;
+});
 
 function CharacterSelection() {
-    const stars = [...Array(1000)].map((_, i) => {
-        const style = {
-            left: `${Math.random() * 100}vw`,
-            top: `${Math.random() * 100}vh`,
-            width: `${Math.random() * 2}px`,
-            height: `${Math.random() * 2}px`,
-            animationDelay: `${Math.random() * 2}s`,
-        };
-        return <div key={i} className="star absolute bg-white rounded-full" style={style} />;
-    });
-
-    const shootingStars = [...Array(10)].map((_, i) => {
-        const style = {
-            left: `${Math.random() * 100}vw`,
-            top: `${Math.random() * 100}vh`,
-            animationDuration: `${2 + Math.random() * 3}s`,
-            animationDelay: `${Math.random() * 5}s`,
-        };
-        return <div key={i} className="shooting-star" style={style} />;
-    });
-    const characters = ['fishie', 'monkee', 'penguii', 'tamy'];
-    const characterImages = ['.icons/fish.png', './icons/monkey.png', './icons/penguin.png', '/icons/tamulogo.png'];
-
+    const characters = ['FISHEE', 'MONKEE', 'PENGUII', 'TAMMY'];
+    const characterImages = ['./icons/fish.png', './icons/monkey.png', './icons/penguin.png', '/icons/tamulogo.png'];
+    const characterDescriptions = ["Bubbly intergalactic fish", 'Silly cosmic monkey', 'Nebula loving penguin', '10yr old space tiger'];
+    const [selectedCard, setSelectedCard] = useState(null);
+  
     return (
-        <main className="relative w-screen h-screen bg-gradient-to-b from-[#2b2b4e] via-[#000033] to-[#2b2b4e] overflow-hidden">
-            {stars}
-            {shootingStars}
-            <div className='flex justify-center items-center h-screen'>
-                <div className='text-center text-white'>
-                    <h1>Select Your Character</h1>
-                    <Carousel>
-                        {characters.map((character, index) => (
-                            <div key={index}>
-                                <img src={characterImages[index]} alt={character} />
-                                <button onClick={() => console.log(`You selected ${character}`)}>
-                                    {character}
-                                </button>
-                            </div>
-                        ))}
-                    </Carousel>
-                </div>
-            </div>
-        </main>
+      <main className="relative w-screen h-screen bg-gradient-to-b from-[#2b2b4e] via-[#000033] to-[#2b2b4e] overflow-hidden">
+        {stars}
+        {shootingStars}
+        <div className="flex flex-col justify-center items-center h-screen">
+          <h1 className="text-4xl mb-12 text-white">Choose your character</h1>
+          <div className="flex flex-wrap justify-center space-x-4 mb-8">
+            {characters.map((character, index) => (
+              <div key={index} className={`card flex flex-col mx-2 ${index === selectedCard ? 'shadow-purple-700 shadow-xl' : ''} items-center text-center bg-white p-4 rounded shadow-lg transition-all duration-500 ${index === selectedCard ? 'transform scale-125' : ''}`} onClick={() => setSelectedCard(index)}>
+                <img className="w-48 h-48" src={characterImages[index]} alt={character} />
+                <h2 className="text-xl">{character}</h2>
+                {index === selectedCard && <p>{characterDescriptions[index]}</p>}
+              </div>
+            ))}
+          </div>
+          <button className="px-4 py-2 bg-blue-500 text-white rounded mt-12">Select</button>
+        </div>
+      </main>
     );
-}
-
-export default CharacterSelection;
+  }
+  
+  export default CharacterSelection;

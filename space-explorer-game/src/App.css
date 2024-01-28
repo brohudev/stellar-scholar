@@ -98,3 +98,35 @@ body {
   background: white;
   animation: shoot 2s linear infinite;
 }
+
+@keyframes swoopIn {
+  0% {
+    transform: scale(0) translateX(-100%);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(0.9) translateX(10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1) translateX(0);
+    opacity: 1;
+  }
+}
+
+.swoop-in {
+  animation: swoopIn 1s ease-out;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.card {
+  animation: swoopIn 1s ease-out;
+}
