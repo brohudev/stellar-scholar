@@ -3,7 +3,7 @@ import { characterKey, characterImages, characterAstronauts } from '../App/Chara
 import './Chatbox.css';
 import OpenAI from "openai";
 
-let promptcontext = '';
+let setGptContext;
 
 const ChatButton = ({ canvas, characterImage }) => {
   const [isChatboxVisible, setIsChatboxVisible] = useState(false);
@@ -31,44 +31,43 @@ const ChatButton = ({ canvas, characterImage }) => {
     </div>
   );
 };
-
-const nullplanetproompt = () =>{
- return "how many planets have i visited?";
-};
-
 const planetproompt = (planet) =>{
   let childsetting = "you are responding to a child under the age of 12. ";
   let planetsetting = `you are teaching them about the planet ${planet}. `;
   let shortanswer = "give very short answers, they must not go over four sentences";
   return childsetting + planetsetting + ".  your name is: " + characterKey[localStorage.getItem(characterKey)]+". "+shortanswer;
 }
-const Proompt = (planet) =>{
+const Proompt = (planet, newMessage) =>{
   let answer = ""
-  planet == null ? answer = nullplanetproompt() : answer = planetproompt(planet);
-  return answer;
-  
+  planet == null ? answer = newMessage : answer = planetproompt(planet);
+  return answer; 
 }
-
 const handleSendMessage = (newMessage, planet, setNewMessage, setMessages, messages) => {
   if (newMessage.trim() !== '') {
-    //save message to local storage. 
-    const promptcontext = "you are a friend of a budding space explorer under the age of 12. your job is to answer any questions they might have in short and simple english";
+    let promptcontext = "you are a friend of a budding space explorer under the age of 12. your job is to answer any questions they might have in short and simple english";
+    let additionalcontext; //ik its not best practice but idc anymore. 
+    if (planet === null) {//add the user message to additional context
+      additionalcontext = `user: ${newMessage}`;
+    } else if (characterKey[localStorage.getItem(characterKey)]) { //if friendname exists. 
+      additionalcontext = `${characterKey[localStorage.getItem(characterKey)]}: ${newMessage}`; //set that to additional context.
+    }
+    setGptContext((prevContext) => [...prevContext, additionalcontext]); //create a context pool to send with every api request. 
+    
+    const allContext = setGptContext.map(line => `${line}\n`).join(''); //dirty processing to create a string.
     const openai = new OpenAI({ apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
     openai.chat.completions.create({
-      messages: [{ role: 'user', content: Proompt(planet)},
-                 { role: 'assistant', content: promptcontext}],
+      messages: [{ role: 'user', content: Proompt(planet, newMessage)}, //pass the prompt...
+                 { role: 'assistant', content: `${promptcontext}\n${allContext}`}], //pass all context that exists. 
       model: "gpt-4"
     }).then((completion) => {
       setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
     }).catch((error) => {
       console.log("openai error: ", error.message);
     });
+    setNewMessage('');    // Clear the input field after sending the message
 
-    // Clear the input field after sending the message
-    setNewMessage('');
   }
 };
-
 const Chatbox = ({ isVisible }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -103,12 +102,13 @@ const Chatbox = ({ isVisible }) => {
           className="flex-1 p-2 border-2 border-black rounded-2xl bg-transparent text-black rounded-r-none"
           placeholder="Type a message..."
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          
+          onChange={(e) => {console.log(e.target.value); setNewMessage(e.target.value)}}
           onKeyPress={handleKeyPress}
         />
         <button
           className="px-4 py-2 bg-purple-500 border-2 border-black border-l-0 text-white rounded-2xl rounded-l-none"
-          onClick={handleSendMessage}
+          onClick={handleSendMessage(newMessage, null, setNewMessage, setMessages, messages)}
         >
           Send
         </button>
@@ -116,5 +116,4 @@ const Chatbox = ({ isVisible }) => {
     </div>
   );
 };
-
 export default ChatButton;
