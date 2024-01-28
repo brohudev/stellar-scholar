@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import './index.css';
 
 function App() {
   // Generate 100 stars
@@ -27,7 +28,7 @@ function App() {
       {stars}
       <div className='absolute w-full h-full flex items-center justify-center'>
         <div>
-          <h1 className='text-6xl text-white font-bold text-center tracking-widest mt-56'>Game Title</h1>
+          <h1 className='text-6xl text-white font-bold text-center tracking-widest mt-56'>Stellar Scholars</h1>
           <button onClick={handleClick} className="focus:outline-none">
             <img
               className={`mx-auto ${animate ? 'animate-rocket' : ''}`}

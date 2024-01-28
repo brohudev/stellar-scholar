@@ -65,3 +65,14 @@
   0% { height: 100%; top: 50%; }
   100% { height: 0; top: 100%; }
 }
+
+@font-face {
+  font-family: 'Nasa';
+  src: url('./font/nasa.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Nasa', sans-serif;
+}
