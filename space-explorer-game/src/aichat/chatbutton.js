@@ -3,6 +3,8 @@ import { characterKey, characterImages } from '../App/CharacterSelection';
 import './Chatbox.css';
 import OpenAI from "openai";
 
+let promptcontext = '';
+
 const ChatButton = ({ canvas, characterImage }) => {
   const [isChatboxVisible, setIsChatboxVisible] = useState(false);
   useEffect(() => {
@@ -30,24 +32,31 @@ const ChatButton = ({ canvas, characterImage }) => {
   );
 };
 
-const Proompt = (planet) =>{
-  const childsetting = "you are responding to a child under the age of 12. ";
-  const planetsetting = `you are teaching them about the planet ${planet}. `; 
-  const shortanswer = "give very short answers, they must not go over four sentences";
+const nullplanetproompt = () =>{
+ return "how many planets have i visited?";
+};
+
+const planetproompt = (planet) =>{
+  let childsetting = "you are responding to a child under the age of 12. ";
+  let planetsetting = `you are teaching them about the planet ${planet}. `;
+  let shortanswer = "give very short answers, they must not go over four sentences";
   return childsetting + planetsetting + ".  your name is: " + characterKey[localStorage.getItem(characterKey)]+". "+shortanswer;
 }
-const Prompt = () =>{
-  return "tell me more about this planet";
+const Proompt = (planet) =>{
+  let answer = ""
+  planet == null ? answer = nullplanetproompt() : answer = planetproompt(planet);
+  return answer;
+  
 }
 
 const handleSendMessage = (newMessage, planet, setNewMessage, setMessages, messages) => {
   if (newMessage.trim() !== '') {
+    //save message to local storage. 
+    const promptcontext = "you are a friend of a budding space explorer under the age of 12. your job is to answer any questions they might have in short and simple english";
     const openai = new OpenAI({ apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
-    console.log(newMessage);
-
     openai.chat.completions.create({
-      messages: [{ role: 'user', content: planet?prompt(): Proompt(planet) },
-                 { role: 'assistant', content: Proompt(planet) }],
+      messages: [{ role: 'user', content: Proompt(planet)},
+                 { role: 'assistant', content: promptcontext}],
       model: "gpt-4"
     }).then((completion) => {
       setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
