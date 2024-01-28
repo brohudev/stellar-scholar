@@ -19,7 +19,7 @@ const ChatButton = ({ canvas, characterImage }) => {
       <button
         className="px-4 py-2 bg-purple-300 text-black rounded mt-4 mr-4 z-50"
         onClick={toggleChatbox}
-        style={{ borderRadius: '50%', overflow: 'hidden', width: '75px', height: '75px' }}
+        style={{ borderRadius: '50%', overflow: 'hidden', width: '100px', height: '100px' }}
       >
         <img src={characterImages[localStorage.getItem(characterKey)]} alt="Character" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
       </button>
@@ -50,10 +50,16 @@ const Chatbox = ({ isVisible }) => {
     }
   };
 
+  const handleKeyPress = (event) => {
+  if (event.key === 'Enter') {
+    handleSendMessage();
+  }
+};
+
   return (
-    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox -m-4  ${isVisible ? 'visible' : ''}`}>
-      <div className="flex flex-col h-64 overflow-y-auto mb-4 border-2 border-black rounded-3xl p-2 ">
-        {messages.map((message, index) => (
+    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox -m-1  ${isVisible ? 'visible' : ''}`}>
+    <div className="flex flex-col h-96 overflow-y-auto mb-4 border-2 border-black rounded-3xl p-2 ">
+      {messages.map((message, index) => (
           <div
             key={index}
             className={`mb-1 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}
@@ -67,24 +73,25 @@ const Chatbox = ({ isVisible }) => {
             </span>
           </div>
         ))}
+        </div>
+        <div className="flex items-center">
+          <input
+            type="text"
+            className="flex-1 p-2 border-2 border-black rounded-2xl bg-transparent text-black rounded-r-none"
+            placeholder="Type a message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+          <button
+            className="px-4 py-2 bg-purple-500 border-2 border-black border-l-0 text-white rounded-2xl rounded-l-none"
+            onClick={handleSendMessage}
+          >
+            Send
+          </button>
+        </div>
       </div>
-      <div className="flex items-center">
-        <input
-          type="text"
-          className="flex-1 p-2 border-2 border-black rounded-2xl bg-transparent text-black rounded-r-none"
-          placeholder="Type a message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-        <button
-          className="px-4 py-2 bg-purple-500 border-2 border-black border-l-0 text-white rounded-2xl rounded-l-none"
-          onClick={handleSendMessage}
-        >
-          Send
-        </button>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ChatButton;
