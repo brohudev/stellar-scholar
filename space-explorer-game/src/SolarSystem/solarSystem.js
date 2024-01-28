@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
-const MAX_DISTANCE_FROM_PLANET=6000;
-const MIN_DISTANCE_FROM_PLANET=2000;
+const MAX_DISTANCE_FROM_PLANET=200;
+const MIN_DISTANCE_FROM_PLANET=100;
 const spriteDir='./icons/';
 
 const app = new PIXI.Application({
@@ -22,9 +22,6 @@ class Camera{
     }
 }
 
-const camera=new Camera();
-
-
 class Planet{
     constructor(radius,velocity,distance){
         this.radius=radius;
@@ -38,6 +35,8 @@ class Planet{
     }
 }
 
+const camera=new Camera();
+
 const planetNames=['Mercury'/*,'Venus'*/,'Earth','Mars'/*,'Jupiter','Saturn'*/,'Uranus','Neptune'];
 const planets={};
 //planet params: radius, angular velocity,distance
@@ -47,11 +46,13 @@ const rotationEasing = 0.1;
 const gravity = 0.1;
 
 const rocket=PIXI.Sprite.from(spriteDir+'Rocket.png');
+rocket.anchor.set(.5);
 rocket.x=app.view.width/2;
 rocket.y=app.view.height/2;
 rocket.scale.set(.1,.1);
 app.stage.addChild(rocket);
-console.log(rocket)
+
+console.log(rocket,camera);
 
 window.onkeydown=ev=>{
     switch ( ev.code ) {
@@ -102,6 +103,9 @@ const normalize=vec2=>{
 app.ticker.add((delta)=> {
     camera.velocity.x -= camera.velocity.x * .01 * delta;
     camera.velocity.y -= camera.velocity.y * .01 * delta;
+
+    camera.velocity.x=camera.velocity.x||0;
+    camera.velocity.y=camera.velocity.y||0;
     
     camera.direction.y = camera.moveForward-camera.moveBackward;
     camera.direction.x = camera.moveRight-camera.moveLeft;
@@ -118,6 +122,8 @@ app.ticker.add((delta)=> {
 
     camera.x += camera.velocity.x * delta/100;
     camera.y += -camera.velocity.y * delta/100;
+    camera.x=camera.x||0;
+    camera.y=camera.y||0;
     //console.log(rocket.x,rocket.y)
 });
 
@@ -130,16 +136,14 @@ planetNames.forEach((planet,idx)=>{
     app.ticker.add((delta) => {
         planets[planet].time+=delta;
         planets[planet].updatePos(sprite);
-        const dx=rocket.scale._x-sprite.x,dy=rocket.scale._y-sprite.y;
-        const dist=dx**2+dy**2;
+        const d={x:rocket.x-sprite.x,y:rocket.y-sprite.y};
+        const dist=Math.sqrt(d.x**2+d.y**2);
         if(dist<MAX_DISTANCE_FROM_PLANET){
             if(dist<MIN_DISTANCE_FROM_PLANET){
                 
             }
-            const a=Math.sqrt(rocket.scale._x**2+rocket.scale._y**2);
-            const b=Math.sqrt(sprite.x**2+sprite.y**2);
-            const angle=Math.acos((rocket.scale._x*sprite.x+rocket.scale._y*sprite.y)/(a*b));
-
+            const sign=d.x>0?-1:1;
+            const angle=(sign*Math.acos(-d.y/dist));
             rocket.rotation += rotationEasing * (angle - rocket.rotation);
             console.log(rocket.rotation)
         }
