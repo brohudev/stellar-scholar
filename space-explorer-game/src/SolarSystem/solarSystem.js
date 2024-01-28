@@ -178,6 +178,7 @@ app.ticker.add((delta)=> {
 
 const canvas={current:app.view,main:app};
 minigame.setUp(canvas);
+let curPlanet='';
 //setup each planet
 planetNames.forEach((planet,idx)=>{
     const sprite=PIXI.Sprite.from(spriteDir+'planets/'+planet+'.png');
@@ -191,7 +192,9 @@ planetNames.forEach((planet,idx)=>{
         const dist=Math.sqrt(d.x**2+d.y**2);
         
         if(dist<MAX_DISTANCE_FROM_PLANET){
-            handleSendMessage('',planet);
+            if(planet!=curPlanet)
+                handleSendMessage('',planet);
+            curPlanet=planet;
             console.log('mesg')
             if(dist<MIN_DISTANCE_FROM_PLANET){
                 if(planet=='jupiter'){
@@ -211,6 +214,9 @@ planetNames.forEach((planet,idx)=>{
             const angle=(sign*Math.acos(-d.y/dist));
             rocket.rotation += rotationEasing * (angle - rocket.rotation);
             // console.log(rocket.rotation)
+        }
+        else{
+            curPlanet='';
         }
     });
 });

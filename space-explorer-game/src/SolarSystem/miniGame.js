@@ -160,7 +160,7 @@ let time=0;
 let i=0;
 app.ticker.add((delta) => {
   time+=delta;
-  if(time>=2500)
+  if(time>=3000)
     gameOver(true);
   else {
     if(time>500&&i==0){
@@ -175,6 +175,12 @@ app.ticker.add((delta) => {
     }
     else if(time>1500&&i==2){
       info.text="Jupiter's gravitational force can deflect or capture these objects, potentially preventing them from reaching the inner solar system, including Earth. ";
+      info.updateText();
+      i++;
+    }
+    else if(time>2000&&i==3){
+      info.text="Congrats! You survived the storm.";
+      chances=Infinity;
       info.updateText();
       i++;
     }
