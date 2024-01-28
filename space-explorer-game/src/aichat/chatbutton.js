@@ -6,8 +6,8 @@ import OpenAI from "openai";
 const ChatButton = ({ canvas, characterImage }) => {
   const [isChatboxVisible, setIsChatboxVisible] = useState(false);
   useEffect(() => {
-    if (canvas && !canvas.parent)
-      document.body.appendChild(canvas);
+    if (canvas.current && !canvas.current.parent)
+      document.body.appendChild(canvas.current);
   }, [canvas]);
 
   const toggleChatbox = () => {

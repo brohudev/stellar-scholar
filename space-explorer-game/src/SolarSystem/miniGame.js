@@ -152,8 +152,19 @@ function generateObstacle() {
   obstacles.push(obstacle);
 }
 
+const minigame=app;
+let canvas;
+minigame.setUp=(main)=> canvas=main;
 function gameOver() {
-  // Implement your game over logic here
   console.log("Game Over");
-  // You might want to reset the game, display a game over screen, etc.
+  const parent=app.view.parentElement;
+  canvas.current.remove();
+  canvas.current=canvas.main.view;
+  app.ticker.stop();
+  canvas.main.ticker.start();
+  parent.appendChild(canvas.current);
 }
+
+minigame.ticker.stop();
+
+export {minigame}
