@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 
 const MAX_DISTANCE_FROM_PLANET=200;
 const MIN_DISTANCE_FROM_PLANET=100;
+const DISTANCE_FROM_SUN=300;
 const spriteDir='./icons/';
 
 const app = new PIXI.Application({
@@ -41,11 +42,19 @@ class Planet{
 const starbgTexture = PIXI.Texture.from(spriteDir + 'starsbg2.jpg');
 const starbg = new PIXI.TilingSprite(
   starbgTexture,
-  app.screen.width,
-  app.screen.height
+  app.screen.width*4,
+  app.screen.height*4
 );
+starbg.anchor.set(0.5);
+starbg.x = 0;
+starbg.y = 0;
+
+app.ticker.add((delta)=> {
+    starbg.x =.15*camera.x;
+    starbg.y =.15*camera.y;
+});
 app.stage.addChild(starbg);
-app.stage.addChild(starbg);
+
 const camera=new Camera();
 
 const planetNames=['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
@@ -147,6 +156,14 @@ app.ticker.add((delta)=> {
     camera.y += -camera.velocity.y * delta/100;
     camera.x=camera.x||0;
     camera.y=camera.y||0;
+
+
+    if(Math.sqrt((rocket.x-planets.sun.sprite.x)**2+(rocket.y-planets.sun.sprite.y)**2)<DISTANCE_FROM_SUN){
+        console.log('too hot')
+        camera.velocity.x-=camera.x*.4;
+        camera.velocity.y-=camera.y*.4;
+    }
+    
     //console.log(rocket.x,rocket.y)
 });
 
@@ -162,7 +179,7 @@ planetNames.forEach((planet,idx)=>{
         const dist=Math.sqrt(d.x**2+d.y**2);
         if(dist<MAX_DISTANCE_FROM_PLANET){
             if(dist<MIN_DISTANCE_FROM_PLANET){
-                
+                console.log('landing')
             }
             const sign=d.x>0?-1:1;
             const angle=(sign*Math.acos(-d.y/dist));
