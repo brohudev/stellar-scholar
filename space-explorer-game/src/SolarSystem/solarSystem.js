@@ -167,7 +167,9 @@ app.ticker.add((delta)=> {
     //console.log(rocket.x,rocket.y)
 });
 
+
 const canvas={current:app.view,main:app};
+minigame.setUp(canvas);
 //setup each planet
 planetNames.forEach((planet,idx)=>{
     const sprite=PIXI.Sprite.from(spriteDir+'planets/'+planet+'.png');
@@ -188,6 +190,8 @@ planetNames.forEach((planet,idx)=>{
                     app.ticker.stop();
                     minigame.ticker.start();
                     parent.appendChild(canvas.current);
+                    camera.x=0;
+                    camera.y=0;
                 }
                 console.log('landing')
             }

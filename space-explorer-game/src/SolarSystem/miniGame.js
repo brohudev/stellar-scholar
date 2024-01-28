@@ -5,10 +5,9 @@ const app = new PIXI.Application({
   resizeTo: window,
 });
 
-document.body.appendChild(app.view);
 
-const surfer = PIXI.Sprite.from("astronaut.png");
-const background = PIXI.Sprite.from("pixelbg2.png");
+const surfer = PIXI.Sprite.from('./icons/'+"astronaut.png");
+const background = PIXI.Sprite.from('./icons/'+"pixelbg2.png");
 background.scale.set(3, 4.75);
 app.stage.addChild(background);
 background.anchor.set(0.5);
@@ -19,7 +18,7 @@ surfer.x = app.screen.width / 2;
 surfer.y = app.screen.height / 2;
 surfer.scale.set(0.5);
 app.stage.addChild(surfer);
-let chances = 3;
+let chances = 5;
 const obstacles = [];
 const obstacleImages = [
   "dust storm 1.png",
@@ -121,7 +120,7 @@ function collisionDetection(sprite1, sprite2) {
 
 function generateObstacle() {
   const randomImageIndex = Math.floor(Math.random() * obstacleImages.length);
-  const obstacle = PIXI.Sprite.from(obstacleImages[randomImageIndex]);
+  const obstacle = PIXI.Sprite.from('./icons/'+obstacleImages[randomImageIndex]);
   obstacle.imgIndex = randomImageIndex;
   obstacle.anchor.set(0.5);
 
@@ -163,6 +162,7 @@ function gameOver() {
   app.ticker.stop();
   canvas.main.ticker.start();
   parent.appendChild(canvas.current);
+  chances=5;
 }
 
 minigame.ticker.stop();
