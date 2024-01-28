@@ -19,7 +19,6 @@ root.render(
         <Route path="/game-start" element={<ChatButton canvas={canvas}/>}/>
       </Routes>
     </Router>
-    <ChatButton/>
   </React.StrictMode>
 );
 
