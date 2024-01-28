@@ -194,10 +194,11 @@ planetNames.forEach((planet,idx)=>{
         if(dist<MAX_DISTANCE_FROM_PLANET){
             if(planet!=curPlanet){
                 openChatbox();
-                handleSendMessage(planet);
+                //handleSendMessage(planet);
+                
+                console.log('mesg')
             }
             curPlanet=planet;
-            console.log('mesg')
             if(dist<MIN_DISTANCE_FROM_PLANET){
                 if(planet=='jupiter'){
                     const parent=canvas.current.parentElement;
@@ -216,9 +217,6 @@ planetNames.forEach((planet,idx)=>{
             const angle=(sign*Math.acos(-d.y/dist));
             rocket.rotation += rotationEasing * (angle - rocket.rotation);
             // console.log(rocket.rotation)
-        }
-        else{
-            curPlanet='';
         }
     });
 });
