@@ -1,6 +1,5 @@
-// ChatButton.js
-
 import React, { useEffect, useState } from 'react';
+import sendToOpenAI from './openai';
 import { characterKey, characterImages } from '../App/CharacterSelection';
 import './Chatbox.css';
 
@@ -34,10 +33,19 @@ const ChatButton = ({ canvas, characterImage }) => {
 const Chatbox = ({ isVisible }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-
-  const handleSendMessage = () => {
+  
+  const handleSendMessage = async () => {
     if (newMessage.trim() !== '') {
-      setMessages([...messages, { text: newMessage, sender: 'user' }]);
+      try {
+        const botResponse = await sendToOpenAI(newMessage);
+
+        // Update state with the received response from OpenAI
+        setMessages([...messages, { text: newMessage, sender: 'user' }, { text: botResponse, sender: 'bot' }]);
+      } catch (error) {
+        // Handle errors if needed
+      }
+
+      // Clear the input field after sending the message
       setNewMessage('');
     }
   };
