@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { characterKey, characterImages } from '../App/CharacterSelection';
+import { characterKey, characterImages, characterAstronauts } from '../App/CharacterSelection';
 import './Chatbox.css';
 import OpenAI from "openai";
 
@@ -17,11 +17,11 @@ const ChatButton = ({ canvas, characterImage }) => {
   return (
     <div className="fixed top-0 right-0 m-4">
       <button
-        className="px-4 py-2 bg-purple-300 text-black rounded mt-4 mr-4 z-50"
+        className=" text-black rounded mt-4 mr-4 z-1"
         onClick={toggleChatbox}
-        style={{ borderRadius: '50%', overflow: 'hidden', width: '100px', height: '100px' }}
+        style={{ borderRadius: '50%', overflow: 'hidden', width: '150px', height: '150px' }}
       >
-        <img src={characterImages[localStorage.getItem(characterKey)]} alt="Character" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+        <img src={characterAstronauts[localStorage.getItem(characterKey)]} alt="Character" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
       </button>
       <div style={{ position: 'fixed', top: '100px', right: '100px' }}>
         <Chatbox isVisible={isChatboxVisible} />
@@ -70,7 +70,7 @@ const Chatbox = ({ isVisible }) => {
   };
 
   return (
-    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox -m-1  ${isVisible ? 'visible' : ''}`}>
+    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox m-6  ${isVisible ? 'visible' : ''}`}>
       <div className="flex flex-col h-96 overflow-y-auto mb-4 border-2 border-black rounded-3xl p-2 ">
         {messages.map((message, index) => (
           <div
