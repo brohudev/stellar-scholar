@@ -1,11 +1,11 @@
-/* Chatbox.css */
-
 .chatbox {
     /* ... rest of your styles ... */
-    transition: transform 0.3s ease-out;
-    transform: translateY(100%);
+    transition: all 0.3s ease-out;
+    opacity: 0;
+    transform: translateY(-20px);
   }
   
   .chatbox.visible {
+    opacity: 1;
     transform: translateY(0);
   }
