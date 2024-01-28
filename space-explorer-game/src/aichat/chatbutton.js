@@ -115,4 +115,4 @@ const Chatbox = ({ isVisible }) => {
     </div>
   );
 };
-export {ChatButton,handleSendMessage,openChatbox};
+export {ChatButton,handleSendMessage,openChatbox,renderer};

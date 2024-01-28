@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { minigame } from './miniGame';
-import { handleSendMessage,openChatbox } from '../aichat/chatbutton';
+import { handleSendMessage,openChatbox,renderer } from '../aichat/chatbutton';
 
 const MAX_DISTANCE_FROM_PLANET=200;
 const MIN_DISTANCE_FROM_PLANET=100;
@@ -194,10 +194,12 @@ planetNames.forEach((planet,idx)=>{
         
         if(dist<MAX_DISTANCE_FROM_PLANET){
             if(time>100&&planet!=curPlanet){
-                openChatbox();
-                handleSendMessage(planet);
-                curPlanet=planet;
-                console.log('mesg');
+                if(renderer.setIsChatboxVisible){
+                    openChatbox();
+                    handleSendMessage(planet);
+                    curPlanet=planet;
+                    console.log('mesg');
+                }
                 time=0;
             }
             time+=delta;
