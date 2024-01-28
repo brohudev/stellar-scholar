@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 
+
 const MAX_DISTANCE_FROM_PLANET=200;
 const MIN_DISTANCE_FROM_PLANET=100;
 const spriteDir='./icons/';
@@ -40,16 +41,16 @@ const camera=new Camera();
 const planetNames=['Mercury'/*,'Venus'*/,'Earth','Mars'/*,'Jupiter','Saturn'*/,'Uranus','Neptune'];
 const planets={};
 //planet params: radius, angular velocity,distance
-const planetParams=[[1,.002],[1,.002],[1,.002],[1,.002],[1,.002],[1,.002],[1,.002],[1,.002]];
+const planetParams=[[1,.001,200],[1,.003,400],[1,.0025,650],[1,.0035,850],[1,.002,1200],[1,.0022,1800],[1,.0015,2000],[1,.01,2300]];
 
 const rotationEasing = 0.1;
 const gravity = 0.1;
 
-const rocket=PIXI.Sprite.from(spriteDir+'Rocket.png');
+const rocket=PIXI.Sprite.from(spriteDir+'rocket with fire.png');
 rocket.anchor.set(.5);
 rocket.x=app.view.width/2;
 rocket.y=app.view.height/2;
-rocket.scale.set(.1,.1);
+rocket.scale.set(.2,.2);
 app.stage.addChild(rocket);
 
 console.log(rocket,camera);
@@ -129,7 +130,7 @@ app.ticker.add((delta)=> {
 
 //setup each planet
 planetNames.forEach((planet,idx)=>{
-    planets[planet]=new Planet(...planetParams[idx],200*(idx+1));
+    planets[planet]=new Planet(...planetParams[idx]);
     const sprite=PIXI.Sprite.from(spriteDir+'planets/'+planet+'.png');
     planets[planet].sprite=sprite;
     app.stage.addChild(sprite);
