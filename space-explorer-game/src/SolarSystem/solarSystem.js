@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 
-
 const MAX_DISTANCE_FROM_PLANET=200;
 const MIN_DISTANCE_FROM_PLANET=100;
 const spriteDir='./icons/';
@@ -37,11 +36,27 @@ class Planet{
         this.sprite.y = camera.y+this.distance*Math.cos(this.velocity*this.time);
     }
 }
-
-const starbg=PIXI.Sprite.from(spriteDir+'stars.avif');
-starbg.scale.set(3,2);
-app.stage.addChild(starbg);
 const camera=new Camera();
+let time=0;
+const stars=generateStars(app);
+moveStars(camera)
+app.ticker.add((delta)=> {
+    time+=delta;
+    stars.forEach(star=>{
+        star.x=camera.x+star.pos.x;
+        star.y=camera.y+star.pos.y;
+    })
+    if(time>=1000){
+        moveStars(camera)
+        time=0;
+    }
+});
+
+
+// const starbg=PIXI.Sprite.from(spriteDir+'stars.avif');
+// starbg.scale.set(3,2);
+// app.stage.addChild(starbg);
+
 
 const planetNames=['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
 const planets={};
