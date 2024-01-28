@@ -18,7 +18,7 @@ const ChatButton = ({ canvas, characterImage }) => {
   return (
     <div className="fixed top-0 right-0 m-4">
       <button
-        className="px-4 py-2 bg-purple-300 text-black rounded m-4 z-50"
+        className="px-4 py-2 bg-purple-300 text-black rounded mt-4 mr-4 z-50"
         onClick={toggleChatbox}
         style={{ borderRadius: '50%', overflow: 'hidden', width: '75px', height: '75px' }}
       >
@@ -38,13 +38,12 @@ const Chatbox = ({ isVisible }) => {
   const handleSendMessage = () => {
     if (newMessage.trim() !== '') {
       setMessages([...messages, { text: newMessage, sender: 'user' }]);
-      // You can add logic here to handle responses from a chatbot or server
       setNewMessage('');
     }
   };
 
   return (
-    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl shadow max-w-md  ${isVisible ? '' : 'hidden'}`}>
+    <div className={`relative top-0 right-0 bg-purple-300 p-4 rounded-3xl max-w-md chatbox -m-4 ${isVisible ? 'visible' : ''}`}>
       <div className="flex flex-col h-64 overflow-y-auto mb-4">
         {messages.map((message, index) => (
           <div
