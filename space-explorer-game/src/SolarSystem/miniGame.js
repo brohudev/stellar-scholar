@@ -146,11 +146,49 @@ function generateObstacle() {
   obstacles.push(obstacle);
 }
 
+const info=new PIXI.Text("There's a meteor storm in Jupiter! Make sure not to get hit by using W,A,S,D to move ",{
+  fontFamily: 'Arial',
+  fontSize: 18,
+  fill: 0xffffff,
+  align: 'center',
+});
+console.log(info)
+info.x=180;
+app.stage.addChild(info);
+
+let time=0;
+let i=0;
+app.ticker.add((delta) => {
+  time+=delta;
+  if(time>=2500)
+    gameOver(true);
+  else {
+    if(time>500&&i==0){
+      info.text="Jupiter is often referred to as the 'vacuum cleaner' of the solar system because of its massive size and strong gravitational pull. \n"
+      info.updateText();
+      i++;
+    }
+    else if(time>1000&&i==1){
+      info.text="It has a significant influence on the orbits of nearby objects, including asteroids and comets. \n";
+      info.updateText();
+      i++;
+    }
+    else if(time>1500&&i==2){
+      info.text="Jupiter's gravitational force can deflect or capture these objects, potentially preventing them from reaching the inner solar system, including Earth. ";
+      info.updateText();
+      i++;
+    }
+  }
+});
+
 const minigame=app;
 let canvas;
 minigame.setUp=(main)=> canvas=main;
-function gameOver() {
-  console.log("Game Over");
+function gameOver(won) {
+  if(won)
+    console.log('Game won')
+  else
+    console.log("Game Over");
   const parent=app.view.parentElement;
   canvas.current.remove();
   canvas.current=canvas.main.view;

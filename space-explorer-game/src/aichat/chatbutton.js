@@ -113,4 +113,4 @@ const Chatbox = ({ isVisible }) => {
     </div>
   );
 };
-export default ChatButton;
+export {ChatButton,handleSendMessage};
