@@ -27,17 +27,20 @@ function App() {
     <main className="relative w-screen h-screen bg-gradient-to-b from-[#000033] via-[#054569] to-[#5591A9] overflow-hidden">
       {stars}
       <div className='absolute w-full h-full flex items-center justify-center'>
-        <div>
-          <h1 className='text-6xl text-white font-bold text-center tracking-widest mt-56'>Stellar Scholars</h1>
-          <button onClick={handleClick} className="focus:outline-none">
-            <img
-              className={`mx-auto ${animate ? 'animate-rocket' : ''}`}
-              src='./rocket.svg'
-              alt='rocket'
-              style={{ zIndex: 10, position: 'relative' }}
-            />
-          </button>
-        </div>
+      <div className="flex flex-col items-center justify-center text-center">
+  <h1 className='text-6xl text-white font-bold tracking-widest mt-56'>Stellar Scholars</h1>
+  <button onClick={handleClick} className="focus:outline-none">
+    <img
+      className={`mx-auto ${animate ? 'animate-rocket' : ''}`}
+      src='./rocket.svg'
+      alt='rocket'
+      style={{ zIndex: 10, position: 'relative' }}
+    />
+  </button>
+  <p className='text-white tracking-wide text-xs'>
+    Click the rocket to launch!
+  </p>
+</div>
       </div>
     </main>
   );
