@@ -24,24 +24,26 @@ class Camera{
 }
 
 class Planet{
-    constructor(radius,velocity,distance){
-        this.radius=radius;
+    constructor(radius,velocity,distance,sprite){
+        this.sprite=sprite;
+        sprite.scale.set(radius,radius);
+        sprite.anchor.set(.5);
         this.velocity=velocity;
         this.distance=distance;
         this.time=0;
     }
-    updatePos(sprite){
-        sprite.x = camera.x+this.distance*Math.sin(this.velocity*this.time);
-        sprite.y = camera.y+this.distance*Math.cos(this.velocity*this.time);
+    updatePos(){
+        this.sprite.x = camera.x+this.distance*Math.sin(this.velocity*this.time);
+        this.sprite.y = camera.y+this.distance*Math.cos(this.velocity*this.time);
     }
 }
 
 const camera=new Camera();
 
-const planetNames=['Mercury'/*,'Venus'*/,'Earth','Mars'/*,'Jupiter','Saturn'*/,'Uranus','Neptune'];
+const planetNames=['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
 const planets={};
 //planet params: radius, angular velocity,distance
-const planetParams=[[1,.001,200],[1,.003,400],[1,.0025,650],[1,.0035,850],[1,.002,1200],[1,.0022,1800],[1,.0015,2000],[1,.01,2300]];
+const planetParams=[[.1,0,0],[1,.001,200],[1,.003,400],[1,.0025,650],[1,.0035,850],[1,.002,1200],[1,.0022,1800],[1,.0015,2000],[1,.01,2300]];
 
 const rotationEasing = 0.1;
 const gravity = 0.1;
@@ -130,9 +132,8 @@ app.ticker.add((delta)=> {
 
 //setup each planet
 planetNames.forEach((planet,idx)=>{
-    planets[planet]=new Planet(...planetParams[idx]);
     const sprite=PIXI.Sprite.from(spriteDir+'planets/'+planet+'.png');
-    planets[planet].sprite=sprite;
+    planets[planet]=new Planet(...planetParams[idx],sprite);
     app.stage.addChild(sprite);
     app.ticker.add((delta) => {
         planets[planet].time+=delta;
