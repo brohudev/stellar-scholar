@@ -34,35 +34,28 @@ const ChatButton = ({ canvas, characterImage }) => {
 const planetproompt = (planet) =>{
   let planetsetting = `You are teaching them about the planet ${planet}. `;
   let motive = "Give them a short description of this planet, in a simple and terse manner. ";
-  return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+".";
-}
-const Proompt = (planet, newMessage) =>{
-  let answer = "";
-  planet == null ? answer = newMessage : answer = planetproompt(planet);
-  return answer; 
+  return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+". ask them if the want to know more.";
 }
 const handleSendMessage = (newMessage, planet, setNewMessage, setMessages, messages) => {
-  if (newMessage.trim() !== '') {
-    let additionalcontext; //ik its not best practice but idc anymore. 
-    if (planet === null) {//add the user message to additional context
-      additionalcontext = `user: ${newMessage}`;
-    } else if (characterKey[localStorage.getItem(characterKey)]) { //if friendname exists. 
-      additionalcontext = `${characterKey[localStorage.getItem(characterKey)]}: ${newMessage}`; //set that to additional context.
-    }
-    setGptContext += `\n${additionalcontext}`; //create a context pool to send with every api request. 
-    const openai = new OpenAI({ apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
-    openai.chat.completions.create({
-      messages: [{ role: 'user', content: Proompt(planet, newMessage)}, //pass the prompt...
-                 { role: 'assistant', content: setGptContext}], //pass all context that exists. 
-      model: "gpt-4"
-    }).then((completion) => {
-      setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
-    }).catch((error) => {
-      console.log("openai error: ", error.message);
-    });
-    setNewMessage('');    // Clear the input field after sending the message
-
-  }
+      let additionalcontext; //ik its not best practice but idc anymore. 
+      if (planet === null) {//add the user message to additional context
+        additionalcontext = `user: ${newMessage}`;
+      } else if (characterKey[localStorage.getItem(characterKey)]) { //if friendname exists. 
+        additionalcontext = `${characterKey[localStorage.getItem(characterKey)]}: ${newMessage}`; //set that to additional context.
+      }
+      setGptContext += `\n${additionalcontext}`; //create a context pool to send with every api request. 
+      const openai = new OpenAI({ apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
+      
+      openai.chat.completions.create({
+        messages: [{ role: 'user', content: planet === null ? newMessage : planetproompt(planet)}, //pass the prompt...
+                  { role: 'assistant', content: setGptContext}], //pass all context that exists. 
+        model: "gpt-4"
+      }).then((completion) => {
+        setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
+      }).catch((error) => {
+        console.log("openai error: ", error.message);
+      });
+      setNewMessage('');    // Clear the input field after sending the message
 };
 const Chatbox = ({ isVisible }) => {
   const [messages, setMessages] = useState([]);
@@ -72,7 +65,7 @@ const Chatbox = ({ isVisible }) => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       // console.log("handle key press log: ",event);
-      handleSendMessage(newMessage, "Earth", setNewMessage, setMessages, messages);
+      handleSendMessage(newMessage, null, setNewMessage, setMessages, messages);
     }
   };
 
