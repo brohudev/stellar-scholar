@@ -36,13 +36,9 @@ const Chatbox = ({ isVisible }) => {
   const [newMessage, setNewMessage] = useState('');
   const handleSendMessage = async () => {
     if (newMessage.trim() !== '') {
-      const openai = new OpenAI({apiKey:"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", dangerouslyAllowBrowser: true});
+      const openai = new OpenAI({apiKey:"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", dangerouslyAllowBrowser: true});
       console.log(newMessage);
       try {
-        // Call the Getresponse function instead of directly making the OpenAI API call
-        // const botResponse = await getresponse(newMessage);
-        console.log("abracadabra");
-        console.log("before the api request");
         const completion = await openai.chat.completions.create({
             messages: [{ role: 'user', content: 'Say I love codered'}],
             // messages: [{ role: "user", content: message },
@@ -52,7 +48,7 @@ const Chatbox = ({ isVisible }) => {
         // Update state with the received response from OpenAI
         setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
       } catch (error) {
-        // console.log(error.message)// Handle errors if needed
+        console.log(error.message)// Handle errors if needed
       }
 
       // Clear the input field after sending the message
