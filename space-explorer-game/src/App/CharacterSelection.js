@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import backgroundImage from './pixelbg.avif';
 import { useNavigate } from 'react-router-dom';
 
+const characterKey='1(hdb3#&93Af';
+
 const stars = [...Array(1000)].map((_, i) => {
     const style = {
         left: `${Math.random() * 100}vw`,
@@ -39,6 +41,11 @@ function CharacterSelection() {
         navigate('/game-start');
       }, 1250); // Adjust this delay to match the duration of your animation
     };
+    const chooseCharacter=index=>{
+      localStorage.setItem(characterKey,index);
+      setSelectedCard(index);
+    };
+
 
     return (
 <main className="relative w-screen h-screen bg-gradient-to-b from-[#2b2b4e] via-[#000033] to-[#2b2b4e] overflow-hidden" style={{ backgroundImage: `url(${backgroundImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
@@ -48,7 +55,7 @@ function CharacterSelection() {
           <h1 className="text-4xl mb-12 text-white">Choose your character</h1>
           <div className="flex flex-wrap justify-center space-x-4 mb-8">
             {characters.map((character, index) => (
-              <div key={index} className={`card flex flex-col mx-2 ${index === selectedCard ? 'shadow-purple-700 shadow-xl' : ''} items-center text-center bg-white p-4 rounded-2xl shadow-lg transition-all duration-500 ${index === selectedCard ? 'transform scale-125' : ''}`} onClick={() => setSelectedCard(index)}>
+              <div key={index} className={`card flex flex-col mx-2 ${index === selectedCard ? 'shadow-purple-700 shadow-xl' : ''} items-center text-center bg-white p-4 rounded-2xl shadow-lg transition-all duration-500 ${index === selectedCard ? 'transform scale-125' : ''}`} onClick={()=>chooseCharacter(index)}>
                 <img className="w-48 h-48" src={characterImages[index]} alt={character} />
                 <h2 className="text-xl">{character}</h2>
                 {index === selectedCard && <p>{characterDescriptions[index]}</p>}
