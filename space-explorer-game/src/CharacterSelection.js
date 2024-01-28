@@ -55,7 +55,7 @@ function CharacterSelection() {
               </div>
             ))}
           </div>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded mt-12" onClick={handleClick}>Select</button>
+          <button className="px-4 py-2 bg-purple-500 text-white rounded mt-12" onClick={handleClick}>Select</button>
         </div>
       </main>
     );
