@@ -56,7 +56,7 @@ function App() {
     </p>
     <button onClick={handleClick} className="focus:outline-none">
       <img
-        className={`mx-auto ${animate ? 'animate-rocket' : ''}`}
+        className={`mt-24 mx-auto ${animate ? 'animate-rocket' : ''}`}
         src='./rocket.svg'
         alt='rocket'
         style={{ zIndex: 10, position: 'relative' }}
