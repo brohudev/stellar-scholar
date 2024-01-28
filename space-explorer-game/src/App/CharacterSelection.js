@@ -27,10 +27,12 @@ const shootingStars = [...Array(10)].map((_, i) => {
   return <div key={i} className="shooting-star" style={style} />;
 });
 
+
+const characters = ['FISHEE', 'MONKEE', 'PENGUII', 'TAMMY'];
+const characterImages = ['./icons/fish.png', './icons/monkey.png', './icons/penguin.png', '/icons/tamulogo.png'];
+const characterDescriptions = ["Bubbly intergalactic fish", 'Silly cosmic monkey', 'Nebula loving penguin', '10yr old space tiger'];
+
 function CharacterSelection() {
-  const characters = ['FISHEE', 'MONKEE', 'PENGUII', 'TAMMY'];
-  const characterImages = ['./icons/fish.png', './icons/monkey.png', './icons/penguin.png', '/icons/tamulogo.png'];
-  const characterDescriptions = ["Bubbly intergalactic fish", 'Silly cosmic monkey', 'Nebula loving penguin', '10yr old space tiger'];
   const [selectedCard, setSelectedCard] = useState(null);
 
   const navigate = useNavigate();
@@ -69,4 +71,4 @@ function CharacterSelection() {
   );
 }
 
-export default CharacterSelection;
+export {CharacterSelection, characterKey, characterImages, characters, characterDescriptions};
