@@ -6,7 +6,7 @@ const MIN_DISTANCE_FROM_PLANET=100;
 const spriteDir='./icons/';
 
 const app = new PIXI.Application({
-    background: '#1099bb',
+    background: '#000000',
     resizeTo: window,
 });
 
