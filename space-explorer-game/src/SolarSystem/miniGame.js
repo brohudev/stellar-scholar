@@ -21,6 +21,8 @@ app.stage.addChild(surfer);
 let chances = 5;
 const obstacles = [];
 const obstacleImages = [
+  "dust storm 1.png",
+  "dust storm 2.png",
   "Layer 1.png",
   "Layer 3.png",
   "Layer 5.png",
@@ -50,21 +52,25 @@ app.ticker.add(() => {
   if (keys["w"]) {
     surfer.y -= speed;
     background.y -= speed * 0.7;
+    surfer.rotation = 0;
   }
 
   if (keys["a"]) {
     surfer.x -= speed;
     background.x -= speed * 0.7;
+    surfer.rotation = 0.2;
   }
 
   if (keys["s"]) {
     surfer.y += speed;
     background.y += speed * 0.7;
+    surfer.rotation = 0;
   }
 
   if (keys["d"]) {
     surfer.x += speed;
     background.x += speed * 0.7;
+    surfer.rotation = -0.2;
   }
 
   // Generate obstacles with a delay
