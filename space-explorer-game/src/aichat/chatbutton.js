@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { getresponse } from './openai';
 import { characterKey, characterImages } from '../App/CharacterSelection';
 import './Chatbox.css';
 import OpenAI from "openai";
@@ -31,24 +30,32 @@ const ChatButton = ({ canvas, characterImage }) => {
   );
 };
 
+const Proompt = () =>{
+  const planet = 'Mercury'; //assuming this variable is set globally
+  const childsetting = "you are responding to a child under the age of 12. ";
+  const planetsetting = `you are teaching them about the planet ${planet}. `; 
+  const shortanswer = "give very short answers, they must not go over four sentences";
+  return childsetting + planetsetting + ".  your name is: " + characterKey[localStorage.getItem(characterKey)]+". "+shortanswer;
+}
 const Chatbox = ({ isVisible }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const handleSendMessage = async () => {
     if (newMessage.trim() !== '') {
-      const openai = new OpenAI({apiKey:"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", dangerouslyAllowBrowser: true});
+      const openai = new OpenAI({apiKey:process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true});
       console.log(newMessage);
       try {
+        const prompt = "tell me more about this planet";
         const completion = await openai.chat.completions.create({
-          messages: [{ role: 'user', content: 'Say I love codered' }],
-          // messages: [{ role: "user", content: message },
-          //            { role: "assistant", name:`${characters[localStorage.getItem(characterKey)]}`}],
-          model: "gpt-3.5-turbo",
+          messages: [{ role: 'user', content: prompt },
+                     { role: 'assistant',  content: Proompt()}],
+          // max_tokens: 50,
+          model: "gpt-4"
         });
         // Update state with the received response from OpenAI
         setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
       } catch (error) {
-        console.log(error.message)// Handle errors if needed
+        console.log("openai error: ",error.message)
       }
 
       // Clear the input field after sending the message
