@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { characterKey, characters, characterImages, characterAstronauts } from '../App/CharacterSelection';
+import { characterKey, characters, characterDescriptions, characterAstronauts } from '../App/CharacterSelection';
 import './Chatbox.css';
 import OpenAI from "openai";
 //global context for all chats. 
@@ -34,7 +34,7 @@ const ChatButton = ({ canvas, characterImage }) => {
 const planetproompt = (planet) =>{
   let planetsetting = `You are teaching them about the planet ${planet}. `;
   let motive = "Give them a short description of this planet, in a simple and terse manner. ";
-  return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+". ask them if the want to know more.";
+  return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+"You are "+characterDescriptions[localStorage.getItem(characterKey)]+". ask them if the want to know more.";
 }
 const handleSendMessage = (newMessage, planet, setNewMessage, setMessages, messages) => {
       let additionalcontext; //ik its not best practice but idc anymore. 
