@@ -38,7 +38,13 @@ class Planet{
     }
 }
 
-const starbg=PIXI.Sprite.from(spriteDir+'stars.avif');
+const starbgTexture = PIXI.Texture.from(spriteDir + 'starsbg.jpg');
+const starbg = new PIXI.TilingSprite(
+  starbgTexture,
+  app.screen.width,
+  app.screen.height
+);
+app.stage.addChild(starbg);
 starbg.scale.set(3,2);
 app.stage.addChild(starbg);
 const camera=new Camera();
