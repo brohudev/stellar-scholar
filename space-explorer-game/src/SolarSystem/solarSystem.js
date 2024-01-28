@@ -1,12 +1,29 @@
 import * as PIXI from 'pixi.js';
 
-const DISTANCE_FROM_PLANET=30;
+const MAX_DISTANCE_FROM_PLANET=6000;
+const MIN_DISTANCE_FROM_PLANET=2000;
 const spriteDir='./icons/';
 
 const app = new PIXI.Application({
     background: '#1099bb',
     resizeTo: window,
 });
+
+class Camera{
+    constructor(){
+        this.moveForward=0;
+        this.moveBackward=0;
+        this.moveLeft=0;
+        this.moveRight=0;
+        this.velocity={x:0,y:0};
+        this.direction={x:0,y:0};
+        this.x=0;
+        this.y=0;
+    }
+}
+
+const camera=new Camera();
+
 
 class Planet{
     constructor(radius,velocity,distance){
@@ -16,42 +33,43 @@ class Planet{
         this.time=0;
     }
     updatePos(sprite){
-        sprite.x = this.distance*Math.sin(this.velocity*this.time);
-        sprite.y = this.distance*Math.cos(this.velocity*this.time);
+        sprite.x = camera.x+this.distance*Math.sin(this.velocity*this.time);
+        sprite.y = camera.y+this.distance*Math.cos(this.velocity*this.time);
     }
 }
 
-const planetNames=[]//['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune'];
+const planetNames=['Mercury'/*,'Venus'*/,'Earth','Mars'/*,'Jupiter','Saturn'*/,'Uranus','Neptune'];
 const planets={};
 //planet params: radius, angular velocity,distance
-const planetParams=[[1,2],[1,2],[1,2],[1,2],[1,2],[1,2],[1,2],[1,2]];
+const planetParams=[[1,.002],[1,.002],[1,.002],[1,.002],[1,.002],[1,.002],[1,.002],[1,.002]];
+
+const rotationEasing = 0.1;
+const gravity = 0.1;
 
 const rocket=PIXI.Sprite.from(spriteDir+'Rocket.png');
+rocket.x=app.view.width/2;
+rocket.y=app.view.height/2;
+rocket.scale.set(.1,.1);
 app.stage.addChild(rocket);
 console.log(rocket)
-rocket.moveForward=0;
-rocket.moveBackward=0;
-rocket.moveLeft=0;
-rocket.moveRight=0;
-rocket.velocity={x:0,y:0};
-rocket.direction={x:0,y:0};
+
 window.onkeydown=ev=>{
     switch ( ev.code ) {
         case 'ArrowUp':
         case 'KeyW':
-            rocket.moveForward = 1;
+            camera.moveForward = 1;
             break;
         case 'ArrowLeft':
         case 'KeyA':
-            rocket.moveLeft = 1;
+            camera.moveLeft = 1;
             break;
         case 'ArrowDown':
         case 'KeyS':
-            rocket.moveBackward = 1;
+            camera.moveBackward = 1;
             break;
         case 'ArrowRight':
         case 'KeyD':
-            rocket.moveRight = 1;
+            camera.moveRight = 1;
             break;
     }
 };
@@ -59,19 +77,19 @@ window.onkeyup=ev=> {
     switch ( ev.code ) {
         case 'ArrowUp':
         case 'KeyW':
-            rocket.moveForward = 0;
+            camera.moveForward = 0;
             break;
         case 'ArrowLeft':
         case 'KeyA':
-            rocket.moveLeft = 0;
+            camera.moveLeft = 0;
             break;
         case 'ArrowDown':
         case 'KeyS':
-            rocket.moveBackward = 0;
+            camera.moveBackward = 0;
             break;
         case 'ArrowRight':
         case 'KeyD':
-            rocket.moveRight = 0;
+            camera.moveRight = 0;
             break;
     }
 };
@@ -81,34 +99,49 @@ const normalize=vec2=>{
     vec2.y/=len;
 };
 
-app.ticker.add((delta) => {
-    rocket.velocity.x -= rocket.velocity.x * 10.0 * delta;
-    rocket.velocity.y -= rocket.velocity.y * 10.0 * delta;
+app.ticker.add((delta)=> {
+    camera.velocity.x -= camera.velocity.x * .01 * delta;
+    camera.velocity.y -= camera.velocity.y * .01 * delta;
     
-    rocket.direction.y = rocket.moveForward-rocket.moveBackward;
-    rocket.direction.x = rocket.moveRight-rocket.moveLeft;
-    normalize(rocket.direction);
+    camera.direction.y = camera.moveForward-camera.moveBackward;
+    camera.direction.x = camera.moveRight-camera.moveLeft;
+    normalize(camera.direction);
+    const len=Math.sqrt(camera.velocity.x**2+camera.velocity.y**2);
+    const sign=camera.velocity.x>0?-1:1;
+    rocket.rotation=(sign*Math.acos(-camera.velocity.y/len));
+    rocket.rotation=rocket.rotation||0;
 
-    if ( rocket.moveForward || rocket.moveBackward ) 
-        rocket.velocity.y -= rocket.direction.y * 40.0 * delta;
-    if ( rocket.moveLeft || rocket.moveRight ) 
-        rocket.velocity.x -= rocket.direction.x * 40.0 * delta;
+    if ( camera.moveForward || camera.moveBackward ) 
+        camera.velocity.y -= camera.direction.y * 40.0 * delta;
+    if ( camera.moveLeft || camera.moveRight ) 
+        camera.velocity.x -= camera.direction.x * 40.0 * delta;
 
-    rocket.x += - rocket.velocity.x * delta/10000;
-    rocket.y += - rocket.velocity.y * delta/10000;
+    camera.x += camera.velocity.x * delta/100;
+    camera.y += -camera.velocity.y * delta/100;
+    //console.log(rocket.x,rocket.y)
 });
 
 //setup each planet
 planetNames.forEach((planet,idx)=>{
-    planets[planet]=new Planet(...planetParams[idx],idx+1);
-    const sprite=PIXI.Sprite.from(spriteDir+planet);
+    planets[planet]=new Planet(...planetParams[idx],200*(idx+1));
+    const sprite=PIXI.Sprite.from(spriteDir+'planets/'+planet+'.png');
     planets[planet].sprite=sprite;
     app.stage.addChild(sprite);
     app.ticker.add((delta) => {
         planets[planet].time+=delta;
         planets[planet].updatePos(sprite);
-        if((rocket.scale._x-sprite.x)**2+(rocket.scale._y-sprite.y)**2<DISTANCE_FROM_PLANET){
+        const dx=rocket.scale._x-sprite.x,dy=rocket.scale._y-sprite.y;
+        const dist=dx**2+dy**2;
+        if(dist<MAX_DISTANCE_FROM_PLANET){
+            if(dist<MIN_DISTANCE_FROM_PLANET){
+                
+            }
+            const a=Math.sqrt(rocket.scale._x**2+rocket.scale._y**2);
+            const b=Math.sqrt(sprite.x**2+sprite.y**2);
+            const angle=Math.acos((rocket.scale._x*sprite.x+rocket.scale._y*sprite.y)/(a*b));
 
+            rocket.rotation += rotationEasing * (angle - rocket.rotation);
+            console.log(rocket.rotation)
         }
     });
 });
