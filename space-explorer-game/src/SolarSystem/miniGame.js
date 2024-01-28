@@ -22,8 +22,6 @@ app.stage.addChild(surfer);
 let chances = 3;
 const obstacles = [];
 const obstacleImages = [
-  "dust storm 1.png",
-  "dust storm 2.png",
   "Layer 1.png",
   "Layer 3.png",
   "Layer 5.png",
@@ -100,8 +98,6 @@ app.ticker.add(() => {
       app.stage.removeChild(obstacle);
       chances--;
 
-      // Optional: You can add a visual indicator or message for the player
-
       if (chances <= 0) {
         // Game over logic, for example, display a game over screen or reset the game
         gameOver();
@@ -109,7 +105,6 @@ app.ticker.add(() => {
     }
   }
 });
-//this doesnt work pls hellb
 const collisionDistances = [500, 200, 200, 200, 200, 200];
 function collisionDetection(sprite1, sprite2) {
   const len = (sprite1.x - sprite2.x) ** 2 + (sprite1.y - sprite2.y) ** 2;
@@ -152,8 +147,19 @@ function generateObstacle() {
   obstacles.push(obstacle);
 }
 
+const minigame=app;
+let canvas;
+minigame.setUp=(main)=> canvas=main;
 function gameOver() {
-  // Implement your game over logic here
   console.log("Game Over");
-  // You might want to reset the game, display a game over screen, etc.
+  const parent=app.view.parentElement;
+  canvas.current.remove();
+  canvas.current=canvas.main.view;
+  app.ticker.stop();
+  canvas.main.ticker.start();
+  parent.appendChild(canvas.current);
 }
+
+minigame.ticker.stop();
+
+export {minigame}

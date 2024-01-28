@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-
+import { minigame } from './miniGame';
 
 const MAX_DISTANCE_FROM_PLANET=200;
 const MIN_DISTANCE_FROM_PLANET=100;
@@ -167,6 +167,7 @@ app.ticker.add((delta)=> {
     //console.log(rocket.x,rocket.y)
 });
 
+const canvas={current:app.view,main:app};
 //setup each planet
 planetNames.forEach((planet,idx)=>{
     const sprite=PIXI.Sprite.from(spriteDir+'planets/'+planet+'.png');
@@ -177,8 +178,17 @@ planetNames.forEach((planet,idx)=>{
         planets[planet].updatePos();
         const d={x:rocket.x-sprite.x,y:rocket.y-sprite.y};
         const dist=Math.sqrt(d.x**2+d.y**2);
+        
         if(dist<MAX_DISTANCE_FROM_PLANET){
             if(dist<MIN_DISTANCE_FROM_PLANET){
+                if(planet=='jupiter'){
+                    const parent=canvas.current.parentElement;
+                    canvas.current.remove();
+                    canvas.current=minigame.view;
+                    app.ticker.stop();
+                    minigame.ticker.start();
+                    parent.appendChild(canvas.current);
+                }
                 console.log('landing')
             }
             const sign=d.x>0?-1:1;
@@ -189,5 +199,5 @@ planetNames.forEach((planet,idx)=>{
     });
 });
 
-const canvas=app.view;
+
 export {canvas};

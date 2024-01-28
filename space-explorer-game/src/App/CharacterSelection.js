@@ -31,6 +31,8 @@ const shootingStars = [...Array(10)].map((_, i) => {
 const characters = ['FISHEE', 'MONKEE', 'PENGUII', 'TAMMY'];
 const characterImages = ['./icons/fish.png', './icons/monkey.png', './icons/penguin.png', '/icons/tamulogo.png'];
 const characterDescriptions = ["Bubbly intergalactic fish", 'Silly cosmic monkey', 'Nebula loving penguin', '10yr old space tiger'];
+const characterAstronauts = ['./icons/astroFish.png', './icons/astroMonkey.png', './icons/astroPenguin.png', '/icons/astroTammy.png'];
+const characterAnimated = ['./icons/animateFish.png', './icons/animateMonkey.png', './icons/animatePenguin.png', '/icons/animateTammy.png'];
 
 function CharacterSelection() {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -57,13 +59,13 @@ function CharacterSelection() {
       <div className="flex flex-col justify-center items-center h-screen">
         <h1 className="text-4xl mb-12 text-white">Choose your character</h1>
         <div className="flex flex-wrap justify-center space-x-4 mb-8">
-          {characters.map((character, index) => (
-            <div key={index} className={`card flex flex-col ${index === selectedCard ? 'shadow-purple-700 shadow-xl' : ''} items-center text-center bg-white p-4 rounded-2xl shadow-lg transition-all duration-500 ${index === selectedCard ? 'transform scale-125' : ''}`} onClick={() => chooseCharacter(index)}>
-              <img className="w-48 h-48" src={characterImages[index]} alt={character} />
-              <h2 className="text-xl">{character}</h2>
-              {index === selectedCard && <p>{characterDescriptions[index]}</p>}
-            </div>
-          ))}
+        {characters.map((character, index) => (
+  <div key={index} className={`card flex flex-col ${index === selectedCard ? 'shadow-purple-700 shadow-xl' : ''} items-center text-center bg-white p-4 rounded-2xl shadow-lg transition-all duration-500 ${index === selectedCard ? 'transform scale-125' : ''}`} onClick={() => chooseCharacter(index)}>
+    <img className="w-48 h-48" src={index === selectedCard ? characterAnimated[index] : characterImages[index]} alt={character} />
+    <h2 className="text-xl">{character}</h2>
+    {index === selectedCard && <p>{characterDescriptions[index]}</p>}
+  </div>
+))}
         </div>
 
         {selectedCard !== null && <button className="px-4 py-2 bg-purple-500 text-white rounded mt-12" onClick={handleClick}>Select</button>}
@@ -72,4 +74,4 @@ function CharacterSelection() {
   );
 }
 
-export {CharacterSelection, characterKey, characterImages, characters, characterDescriptions};
+export {CharacterSelection, characterKey, characterImages, characters, characterDescriptions, characterAstronauts};
