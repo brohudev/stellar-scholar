@@ -33,11 +33,12 @@ const characterImages = ['./icons/fish.png', './icons/monkey.png', './icons/peng
 const characterDescriptions = ["Bubbly intergalactic fish", 'Silly cosmic monkey', 'Nebula loving penguin', '10yr old space tiger'];
 
 function CharacterSelection() {
+  const [isAnimating, setIsAnimating] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
   const navigate = useNavigate();
   const handleClick = () => {
-    console.log('Button clicked gg');
+    setIsAnimating(true);
 
     setTimeout(() => {
       navigate('/game-start');
@@ -50,14 +51,14 @@ function CharacterSelection() {
 
 
   return (
-    <main className="relative w-screen h-screen bg-gradient-to-b from-[#2b2b4e] via-[#000033] to-[#2b2b4e] overflow-hidden" style={{ backgroundImage: `url(${backgroundImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+<main className={`relative w-screen h-screen bg-gradient-to-b from-[#2b2b4e] via-[#000033] to-[#2b2b4e] overflow-hidden ${isAnimating ? 'animate-fade-out' : ''}`} style={{ backgroundImage: `url(${backgroundImage})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
       {stars}
       {shootingStars}
       <div className="flex flex-col justify-center items-center h-screen">
         <h1 className="text-4xl mb-12 text-white">Choose your character</h1>
         <div className="flex flex-wrap justify-center space-x-4 mb-8">
           {characters.map((character, index) => (
-            <div key={index} className={`card flex flex-col mx-2 ${index === selectedCard ? 'shadow-purple-700 shadow-xl' : ''} items-center text-center bg-white p-4 rounded-2xl shadow-lg transition-all duration-500 ${index === selectedCard ? 'transform scale-125' : ''}`} onClick={() => chooseCharacter(index)}>
+            <div key={index} className={`card flex flex-col ${index === selectedCard ? 'shadow-purple-700 shadow-xl' : ''} items-center text-center bg-white p-4 rounded-2xl shadow-lg transition-all duration-500 ${index === selectedCard ? 'transform scale-125' : ''}`} onClick={() => chooseCharacter(index)}>
               <img className="w-48 h-48" src={characterImages[index]} alt={character} />
               <h2 className="text-xl">{character}</h2>
               {index === selectedCard && <p>{characterDescriptions[index]}</p>}

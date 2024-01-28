@@ -130,3 +130,16 @@ body {
 .card {
   animation: swoopIn 1s ease-out;
 }
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-out {
+  animation: fade-out 1.25s;
+}
