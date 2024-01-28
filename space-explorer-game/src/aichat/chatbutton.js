@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { characterKey, characterImages, characterAstronauts } from '../App/CharacterSelection';
+import { characterKey, characters, characterImages, characterAstronauts } from '../App/CharacterSelection';
 import './Chatbox.css';
 import OpenAI from "openai";
-
-let setGptContext;
+//global context for all chats. 
+let setGptContext = "you are a friend of a budding space explorer under the age of 12. your job is to answer any questions they might have in short and simple english. give very short answers, they must not go over five sentences";
 
 const ChatButton = ({ canvas, characterImage }) => {
   const [isChatboxVisible, setIsChatboxVisible] = useState(false);
@@ -32,32 +32,28 @@ const ChatButton = ({ canvas, characterImage }) => {
   );
 };
 const planetproompt = (planet) =>{
-  let childsetting = "you are responding to a child under the age of 12. ";
-  let planetsetting = `you are teaching them about the planet ${planet}. `;
-  let shortanswer = "give very short answers, they must not go over four sentences";
-  return childsetting + planetsetting + ".  your name is: " + characterKey[localStorage.getItem(characterKey)]+". "+shortanswer;
+  let planetsetting = `You are teaching them about the planet ${planet}. `;
+  let motive = "Give them a short description of this planet, in a simple and terse manner. ";
+  return planetsetting + motive +"Your name is: " + characters[localStorage.getItem(characterKey)]+".";
 }
 const Proompt = (planet, newMessage) =>{
-  let answer = ""
+  let answer = "";
   planet == null ? answer = newMessage : answer = planetproompt(planet);
   return answer; 
 }
 const handleSendMessage = (newMessage, planet, setNewMessage, setMessages, messages) => {
   if (newMessage.trim() !== '') {
-    let promptcontext = "you are a friend of a budding space explorer under the age of 12. your job is to answer any questions they might have in short and simple english";
     let additionalcontext; //ik its not best practice but idc anymore. 
     if (planet === null) {//add the user message to additional context
       additionalcontext = `user: ${newMessage}`;
     } else if (characterKey[localStorage.getItem(characterKey)]) { //if friendname exists. 
       additionalcontext = `${characterKey[localStorage.getItem(characterKey)]}: ${newMessage}`; //set that to additional context.
     }
-    setGptContext((prevContext) => [...prevContext, additionalcontext]); //create a context pool to send with every api request. 
-    
-    const allContext = setGptContext.map(line => `${line}\n`).join(''); //dirty processing to create a string.
+    setGptContext += `\n${additionalcontext}`; //create a context pool to send with every api request. 
     const openai = new OpenAI({ apiKey: process.env.REACT_APP_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
     openai.chat.completions.create({
       messages: [{ role: 'user', content: Proompt(planet, newMessage)}, //pass the prompt...
-                 { role: 'assistant', content: `${promptcontext}\n${allContext}`}], //pass all context that exists. 
+                 { role: 'assistant', content: setGptContext}], //pass all context that exists. 
       model: "gpt-4"
     }).then((completion) => {
       setMessages([...messages, { text: newMessage, sender: "player" }, { text: completion.choices[0].message.content, sender: 'bot' }]);
@@ -75,7 +71,8 @@ const Chatbox = ({ isVisible }) => {
   
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      handleSendMessage(newMessage, null, setNewMessage, setMessages, messages);
+      // console.log("handle key press log: ",event);
+      handleSendMessage(newMessage, "Earth", setNewMessage, setMessages, messages);
     }
   };
 
@@ -103,12 +100,12 @@ const Chatbox = ({ isVisible }) => {
           placeholder="Type a message..."
           value={newMessage}
           
-          onChange={(e) => {console.log(e.target.value); setNewMessage(e.target.value)}}
+          onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={handleKeyPress}
         />
         <button
           className="px-4 py-2 bg-purple-500 border-2 border-black border-l-0 text-white rounded-2xl rounded-l-none"
-          onClick={handleSendMessage(newMessage, null, setNewMessage, setMessages, messages)}
+          onClick={()=>handleSendMessage(newMessage, null, setNewMessage, setMessages, messages)}
         >
           Send
         </button>
