@@ -38,21 +38,20 @@ class Planet{
     }
 }
 
-const starbgTexture = PIXI.Texture.from(spriteDir + 'starsbg.jpg');
+const starbgTexture = PIXI.Texture.from(spriteDir + 'starsbg2.jpg');
 const starbg = new PIXI.TilingSprite(
   starbgTexture,
   app.screen.width,
   app.screen.height
 );
 app.stage.addChild(starbg);
-starbg.scale.set(3,2);
 app.stage.addChild(starbg);
 const camera=new Camera();
 
 const planetNames=['sun','mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
 const planets={};
 //planet params: radius, angular velocity,distance
-const planetParams=[[.1,0,0],[1,.001,200],[1,.003,400],[1,.0025,650],[1,.0035,850],[1,.002,1200],[1,.0022,1800],[1,.0015,2000],[1,.01,2300]];
+const planetParams=[[.3,0,0],[2,.001,400],[2,.003,600],[2,.0025,850],[2,.0035,1050],[2.5,.002,1400],[2,.0022,2000],[2,.0015,2200],[2,.01,2500]];
 
 const rotationEasing = 0.1;
 const gravity = 0.1;
@@ -63,7 +62,7 @@ const rocket=new PIXI.Sprite(stillTexture);
 rocket.anchor.set(.5);
 rocket.x=app.view.width/2;
 rocket.y=app.view.height/2;
-rocket.scale.set(.2,.2);
+rocket.scale.set(.3,.3);
 app.stage.addChild(rocket);
 
 console.log(rocket,camera);
