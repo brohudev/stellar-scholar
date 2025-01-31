@@ -1,31 +1,56 @@
-# TAMUHack
-# Getting Started with Create React App
+# 🚀 TAMUHack X - Space Explorer 🌌  
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An **educational space adventure game** designed for kids under 12, combining **fun physics-based gameplay** with an **AI-powered chatbot** to teach them about the **solar system**!  
 
-## Available Scripts
+## 🏆 Awards & Recognition  
+🏅 **Winner of 4 awards at TAMUHack X 2024**  
+💰 **Secured $500+ in prizes**  
 
-In the project directory, you can run:
+## 🌍 About the Game  
+**Space Explorer** takes young players on an interstellar journey across the **8 planets** of the solar system! The game blends **learning and gameplay** by featuring:  
+✅ **A spaceship exploration system** – Fly between planets and learn fun facts about each one.  
+✅ **Atmospheric Dodge Game** – When landing on a planet, players must dodge enemies in a physics-based mini-game.  
+✅ **AI Chatbot Guide** – Powered by OpenAI, the chatbot answers space-related questions and adapts based on the player’s location.  
 
-### `npm start`
+## 🛠️ Tech Stack  
+- **Frontend:** React.js (Create React App)  
+- **Backend:** [If applicable, mention backend tech]  
+- **AI:** OpenAI API integration  
+- **Physics Engine:** [Specify if used, e.g., Matter.js, Box2D, or custom physics]  
+- **Deployment:** TBD (if applicable)  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Getting Started  
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1️⃣ Clone the Repository  
+```sh
+git clone https://github.com/your-username/tamuhack-space-explorer.git
+cd tamuhack-space-explorer
+```
 
-### `npm test`
+### 2️⃣ Install Dependencies  
+```sh
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3️⃣ Running the Game  
 
-### `npm run build`
+#### Start the Development Server  
+```sh
+npm start
+```
+- Runs the game in development mode.  
+- Open [http://localhost:3000](http://localhost:3000) in your browser.  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Run Tests  
+```sh
+npm test
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Build for Production  
+```sh
+npm run build
+```
+- Creates an optimized production build in the `build/` directory.  
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📜 License  
+This project is licensed under the [MIT License](LICENSE).  
